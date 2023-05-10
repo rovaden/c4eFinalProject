@@ -1,6 +1,6 @@
 import pygame, sys
 import deck
-#import drawCard
+import drawCard
 from pygame.locals import QUIT
 
 #create starting objects
@@ -23,16 +23,16 @@ p1card2= {"shape": pygame.Rect(200+2, 300-70, 36,58),"value":player1["hand"][1],
 p2card1={"shape":pygame.Rect(200-38,22,36,58),"color":(255,0,0),"value": player2["hand"][0]}
 p2card2={"shape":pygame.Rect(200+2,22,36,58),"color":(255,0,0),"value": player2["hand"][1]}
 
-#while True:
-window.fill((255,255,255))
-for event in pygame.event.get():
-    if event.type == QUIT:
-        pygame.quit()
-        sys.exit()
-pygame.draw.rect(window, p1card1["color"], p1card1["shape"])
-pygame.draw.rect(window, p1card1["color"], p1card1["shape"])
-#drawCard.drawCardFace(window, p1card1["shape"],p1card1['value'], font)
-#drawCard.drawCardFace(window, p1card2["shape"],p1card2['value'], font)
-#drawCard.drawCardBack(window,p2card1["shape"])
-#drawCard.drawCardBack(window,p2card2["shape"])
-pygame.display.update()
+while True:
+    window.fill((255,255,255))
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            pygame.quit()
+            sys.exit()
+    pygame.draw.rect(window, p1card1["color"], p1card1["shape"])
+    pygame.draw.rect(window, p1card1["color"], p1card1["shape"])
+    drawCard.drawCardFace(window, p1card1["shape"],p1card1['value'], font)
+    drawCard.drawCardFace(window, p1card2["shape"],p1card2['value'], font)
+    drawCard.drawCardBack(window,p2card1["shape"])
+    drawCard.drawCardBack(window,p2card2["shape"])
+    pygame.display.update()
