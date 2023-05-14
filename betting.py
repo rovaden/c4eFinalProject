@@ -1,9 +1,7 @@
-player1 = {"balance": 1000, "hand": []}
-player2 = {"balance": 1000, "hand": []}
-players = [player1, player2]
-pot = 0
-
 def betting(players, pot):
+  allin = False
+  player1 = players[0]
+  player2 = players[1]
   highbet = None
   playernumber = 2
   turncounter = 0
@@ -11,7 +9,7 @@ def betting(players, pot):
   player2bet = 0
   #NOTE: don't mod playernumber by 1; it will always be zero. Change it.
   
-  
+
 #end conditions for betting: player1bet and player2 but must be equal to each other and highbet
   while player1bet != highbet or player2bet != highbet:
 
@@ -41,27 +39,45 @@ def betting(players, pot):
       #betting on the first turn 
       elif action in actions and action == "bet":
         bet = input("How much would you like to bet?")
+        while bet.isnumeric() == False:
+          bet = input("please bet an integer amount")
         #check if bet is a valid input using a function
         
         
         if playernumber % 2 == 0:
           player1bet = int(bet)
-          #need function checking for numbers vs. letters for player1bet
-          players[0]["balance"] -= player1bet
-          highbet = player1bet
-          pot += player1bet
-          turncounter += 1
-          playernumber += 1
+          if player1bet >= player1["balance"]:
+            allin = True
+            player1bet = player1["balance"]
+            highbet = player1bet                           
+            pot += player1bet
+            turncounter += 1
+            playernumber += 1
+            players[0]["balance"] -= player1bet
+          else:
+            players[0]["balance"] -= player1bet
+            highbet = player1bet
+            pot += player1bet
+            turncounter += 1
+            playernumber += 1
           
         else:
           player2bet = int(bet)
-          players[1]["balance"] -= player2bet
-          highbet = player2bet
-          pot += player2bet
-          turncounter += 1
-          playernumber += 1
+          if player2bet >= player2["balance"]:
+            allin = True
+            player2bet = player2["balance"]
+            player2["balance"] -= player2bet
+            pot += player2bet
+            turncounter += 1
+            playernumber += 1
+          else:
+            players[1]["balance"] -= player2bet
+            highbet = player2bet
+            pot += player2bet
+            turncounter += 1
+            playernumber += 1
 
-      else:
+      else: #since I added a loop to make it an int I don't think this is needed anymore
           print("Invalid Input. Please try again.")
 
 
@@ -84,25 +100,47 @@ def betting(players, pot):
       #raise
       elif action in actions and action == "raise":
         bet = input("How much would you like to raise?")
-        #check if bet is a number, not a letter, and is greater than 0 (Placeholder)
+        while bet.isnumeric() == False:
+          bet = input("please raise an integer amount")
+        #check if bet is a number, not a letter, and is greater than 0 (Placeholder) #should be fixed by the while loop
         if playernumber % 2 == 0:
-          players[0]["balance"] -= bet
-          pot += bet
-          player1bet += bet
-          highbet += bet
-          playernumber += 1
-          turncounter += 1
+          if bet >= players[0]["balance"]:
+            allin = True
+            bet = players[0]["balance"]
+            players[0]["balance"] -= bet
+            player1bet += bet
+            highbet += bet
+            playernumber += 1
+            turncounter += 1
+          
+          else:
+            players[0]["balance"] -= bet
+            pot += bet
+            player1bet += bet
+            highbet += bet
+            playernumber += 1
+            turncounter += 1
 
         else:
-          players[1]["balance"] -= bet
-          pot += bet
-          player2bet += bet
-          highbet += bet
-          playernumber += 1
-          turncounter += 1
+          if bet >= players[1]["balance"]:
+            allin = True
+            bet = player1["balance"]
+            pot+= bet
+            highbet += bet
+            playernumber += 1
+            turncounter += 1
+            player2bet += bet
+            
+          else:
+            players[1]["balance"] -= bet
+            pot += bet
+            player2bet += bet
+            highbet += bet
+            playernumber += 1
+            turncounter += 1
 
       #call
-      elif action in actions and action == "call":
+      elif action in actions and action == "call": 
         
         if playernumber % 2 == 0 and player1bet < highbet:
           callamount = highbet - player1bet
@@ -122,14 +160,3 @@ def betting(players, pot):
 
 #NOTE: initial version will not have check as an action. 
 #I will make a function to check if keyboard inputs are numbers or letters so that no invalid inputs result in errors.
-      
-
-  
-    
-    
-  
-  
-  
-
-
-
